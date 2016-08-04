@@ -1,7 +1,6 @@
 //vector::assign
 //vector::at
 //vector::back
-//vector::begin
 //vector::cbegin
 //vector::cend
 //vector::clear
@@ -11,7 +10,6 @@
 //vector::emplace
 //vector::emplace_back
 //vector::empty
-//vector::end
 //vector::erase
 //vector::front
 //vector::get_allocator
@@ -22,107 +20,66 @@
 //vector::resize
 //vector::shrink_to_fit
 //vector::swap
-
+#pragma once
 #include <iostream>
 #include <stdexcept>
-#include <new>
 #include <iterator>
 
 namespace Vector {
     typedef unsigned long long ull;
     template<typename T>
     class vector {
-
-        class iterator : public std::iterator<std::random_access_iterator_tag, T, std::ptrdiff_t, T*, T&> {
+        public: class iterator : public std::iterator<std::random_access_iterator_tag, T, std::ptrdiff_t, T*, T&> {
             private:
                 T *iter;
             public:
-                iterator() :iter{nullptr}{};
+                iterator();
                 explicit iterator(T* ptr) : iter{ptr}{}
-                iterator(const iterator &other) : iter{other.ptr}{}
+                iterator(const iterator &other);
                 //==================COMPARSION====================
-                inline bool operator== (const T &other) const {
-                    return iter == other.iter;
-                }  
-                inline bool operator!= (const T &other) const {
-                    return !(this == other);
-                }
-                inline bool operator >(const iterator &other) const {
-                    return std::distance(iter, other.iter) > 0 ? true : false;
-                }
-                inline bool operator <(const iterator &other) const {
-                    return std::distance(iter, other.iter) < 0 ? true : false;
-                }
-                inline bool operator >=(const iterator &other) const {
-                    return std::distance(iter, other.iter) >= 0 ? true : false;
-                }
-                inline bool operator <=(const iterator &other) const {
-                    return std::distance(iter, other.iter) <= 0 ? true : false;
-                }
+                inline bool operator== (const iterator&) const; 
+                inline bool operator!= (const iterator&) const;
+                inline bool operator >(const iterator&) const;
+                inline bool operator <(const iterator&) const;
+                inline bool operator >=(const iterator&) const;
+                inline bool operator <=(const iterator&) const;
                 //================================================
                 //==================ARITMETICS====================
-                inline iterator& operator++() {
-                    iter++;
-                    return *this;
+                inline iterator& operator++(); 
+                inline iterator operator++(int);
+                inline iterator& operator--(); 
+                inline iterator operator--(int);
+                inline iterator operator+(const iterator&) const;
+                inline iterator operator-(const iterator&) const;
+                inline iterator operator+(const int ) const; 
+                inline iterator& operator+=(const int);
+                inline iterator& operator-=(const int);
+                inline iterator operator-(const int) const; 
+                inline friend iterator operator+(const int n, const iterator& iter) {;
+                    return iter + n; 
                 }
-                inline iterator operator++(int) {
-                    iterator tmp(*this);  
-                    iter++;
-                    return *this;
-                }
-                inline iterator& operator--() {
-                    iter--;
-                    return *this;
-                }
-                inline iterator operator--(int) {
-                    iterator tmp(*this);
-                    iter--;
-                    return tmp;
-                }
-                inline iterator operator+(const iterator &other) const {
-                    return iterator(iter + other.iter);
-                }
-                inline iterator operator-(const iterator &other) const {
-                    return iterator(iter - other.iter);
-                }
-                inline iterator operator+(const int n) const {
-                    return iterator(iter + n);
-                }
-                inline iterator& operator+=(const int n) {
-                    iter+=n;
-                    return *this;
-                }
-                inline iterator& operator-=(const int n) {
-                    iter-=n;
-                    return *this;
-                }
-                inline iterator operator-(const int n) const {
-                    return iterator(iter - n);
-                }
-                inline friend iterator operator+(iterator &iter, int n);
-                inline friend iterator operator-(iterator &iter, int n);
+                inline friend iterator operator-(const int n, const iterator& iter) {
+                    return iter - n; 
+                };
                 //================================================
                 //==============REFENCE/DEREFERENCE===============
                 inline T& operator*() {
                     return *iter;
                 }
                 inline const T& operator*() const {
-                    return *iter;
+                    return *iter; 
                 }
                 inline T *operator->() {
-                    return iter;
+                    return iter; 
                 }
                 inline const T *operator->() const{
-                    return iter;
+                    return iter; 
                 }
                 //=============================================== 
                 //=====================MISC======================
-                inline iterator& operator[](const int index) const {
-                    return iter + index;
-                }
+                inline iterator& operator[](const int index) const; 
         };
 
-        public:
             vector() {
                 m_container = allocate(m_capacity);
             }
@@ -177,6 +134,12 @@ namespace Vector {
                     shift_right(index);
                 }
                 m_container[index] = value;
+            }
+            inline iterator begin() {
+                return iterator(m_container);
+            }
+            inline iterator end() {
+                return iterator(m_container + m_size);
             }
         private:
             T *m_container = nullptr;

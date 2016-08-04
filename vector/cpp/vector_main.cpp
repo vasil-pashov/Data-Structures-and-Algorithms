@@ -1,10 +1,9 @@
 #include <iostream>
-//#include "../include/vector.hpp"
+#include "../include/vector.hpp"
 #include <string>
-//#include <vector>
 
 using namespace std;
-//using namespace Vector;
+using namespace Vector;
 
 class MyClass {
    private:
@@ -36,7 +35,7 @@ class C {
 };
 
 int main() {
- /*   vector<MyClass> vec, vec2;
+    vector<MyClass> vec, vec2;
     MyClass a("a"), b("b"), c("c"), d("d"), e("e");
     vec.push_back(a);
     vec.push_back(b);
@@ -44,12 +43,6 @@ int main() {
     vec.push_back(d);
     vec.push_back(e);
     vector<MyClass> vec1 = vec;
-    vec2 = vec;*/
-    MyClass s("s");
-    MyClass *a = new MyClass("abc");
-    C c(a);
-    cout<<c->get();
-    *c = s; 
-    cout<<c->get();
+    vec2 = vec;
     return 0;
 }
