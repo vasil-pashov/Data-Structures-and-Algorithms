@@ -1,28 +1,14 @@
-//vector::assign
-//vector::back
-//vector::cbegin
-//vector::cend
-//vector::crbegin
-//vector::crend
-//vector::emplace
-//vector::emplace_back
-//vector::get_allocator
-//vector::max_size
-//vector::rbegin
-//vector::rend
-//vector::reserve
-//vector::resize
-//vector::swap
-
 #pragma once
 #include <iostream>
 #include <stdexcept>
 #include <iterator>
+#include "../../Interfaces/random_access_container.h"
+
 
 namespace Vector {
-    typedef unsigned long long ull;
     template<typename T>
-    class vector {
+    class vector : IRandom_access_container<T> {
+        typedef typename IRandom_access_container<T>::ull ull;
         public: class iterator : public std::iterator<std::random_access_iterator_tag, T, std::ptrdiff_t, T*, T&> {
             private:
                 T *iter;
@@ -137,7 +123,7 @@ namespace Vector {
             inline ull size() {
                 return m_size;
             }
-            T& operator[](int index) {
+            T& operator[](const ull index) {
                 return m_container[index];
             }
             inline ull capacity() {
@@ -151,7 +137,7 @@ namespace Vector {
                     append(new_element);
                 }
             }
-            T& at(int index) {
+            T& at(const ull index) {
                 if(index < 0 || index > m_capacity) {
                     throw std::out_of_range("Vector range check");
                 }
@@ -206,7 +192,7 @@ namespace Vector {
             }
             inline bool empty() {
                 return m_size == 0;
-            }
+             }
         private:
             ull m_size = 0, m_capacity = 4; 
             T *m_container;
