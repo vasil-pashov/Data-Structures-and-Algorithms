@@ -7,8 +7,8 @@
 
 namespace Vector {
     template<typename T>
-    class vector : IRandom_access_container<T> {
-        typedef typename IRandom_access_container<T>::ull ull;
+    class vector : IRandomAccessContainer<T> {
+        typedef typename IRandomAccessContainer<T>::ull ull;
         public: class iterator : public std::iterator<std::random_access_iterator_tag, T, std::ptrdiff_t, T*, T&> {
             private:
                 T *iter;
@@ -123,7 +123,7 @@ namespace Vector {
             inline ull size() {
                 return m_size;
             }
-            T& operator[](const ull index) {
+            T& operator[](ull index) {
                 return m_container[index];
             }
             inline ull capacity() {
@@ -137,7 +137,7 @@ namespace Vector {
                     append(new_element);
                 }
             }
-            T& at(const ull index) {
+            T& at(ull index) {
                 if(index < 0 || index > m_capacity) {
                     throw std::out_of_range("Vector range check");
                 }
