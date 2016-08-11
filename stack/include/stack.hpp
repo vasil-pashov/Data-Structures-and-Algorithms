@@ -9,15 +9,17 @@ namespace StackN {
             inline ~Stack() {
                 delete [] m_container;
             }
-            Stack(const T &other): m_size{other.m_size}, m_capacity{other.m_capacity}, m_container{allocate(m_capacity)}  {
-                m_container = new T[m_size];
-                copy(m_container, other.m_container, m_size);
+            Stack(const Stack &other): m_size{other.m_size}, m_capacity{other.m_capacity}, m_container{allocate(m_capacity)}  {
+                copy(other.m_container, m_container, m_size);
             }
-            Stack operator= (const T& other) {
-                m_size = other.m_size;
-                m_capacity = other.m_capacity;
-                m_container = allocate(m_capacity);
-                copy(m_container, other.m_container, m_size);
+            Stack& operator= (const Stack &other) {
+                if(this != &other) {
+                    m_size = other.m_size;
+                    m_capacity = other.m_capacity;
+                    m_container = allocate(m_capacity);
+                    copy(other.m_container, m_container, m_size);
+                }
+                return *this;
             }
             inline bool empty() {
                 return m_size == 0;
@@ -29,11 +31,12 @@ namespace StackN {
             inline ull size() {
                 return m_size;
             }
-            inline T peek() {
+            inline T &peek() {
                 return m_container[m_size-1];
             }
             inline T pop() {
-                return m_container[--m_size];
+                m_size--;
+                return m_container[m_size];
             }
             void push(const T &element) {
                 if(m_size == m_capacity) {
