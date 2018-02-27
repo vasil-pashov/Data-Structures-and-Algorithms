@@ -1,2 +1,5 @@
 *.swp
 **/build/*
+*.pyc
+*.in
+*.out
